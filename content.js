@@ -22,7 +22,7 @@
         lastLocationHref = window.location.href;
     }, 500);
 
-    function formatNumberToDKK(amount) {
+    function formatNumberToDKK(amount, includeMinus = true) {
         if (amount === null || amount === undefined) {
             return '';
         }
@@ -42,7 +42,7 @@
 
         const valueHaveMinus = value.indexOf('-') > -1;
         const valueWithoutMinus = valueHaveMinus ? value.substring(1) : value;
-        return `${valueHaveMinus ? '-' : ''}${valueWithoutMinus}`;
+        return `${includeMinus && valueHaveMinus ? '-' : ''}${valueWithoutMinus}`;
     }
 
     function renderInvoicesSumOfAmounts() {
@@ -86,12 +86,16 @@
             return;
         }
 
+        const provisionalTaxSumElement = document.querySelector('.provisional-tax .provisional-tax-amount');
+        const haveProvisionalTax = provisionalTaxSumElement && provisionalTaxSumElement.innerText ? true : false;
+        const provisionalTaxAmount = haveProvisionalTax ? getAmount(provisionalTaxSumElement.innerText) : 0;
+
         const bankAmount = getAmount(bankSumElement.innerText);
         const vatAmount = getAmount(vatSumElement.querySelector('h2').innerText);
         const resultAmount = getAmount(resultWidgetElement.querySelector('#dashboard-graph-total').innerText);
         const resultVatAmount = resultAmount * 0.22;
 
-        const result = bankAmount - vatAmount - resultVatAmount;
+        const result = bankAmount - vatAmount - (haveProvisionalTax ? provisionalTaxAmount : resultVatAmount);
 
         const bankRealElement = document.createElement('div');
         bankRealElement.classList.add('widget-stats');
@@ -102,19 +106,33 @@
                     <div class="bank-real-label">Nuv. banksaldo</div>
                     <div class="bank-real-value positive">${formatNumberToDKK(bankAmount)}</div>
                 </div>
-                <span>-</span>
+                <span>${vatAmount < 0 ? '+' : '-'}</span>
                 <div class="bank-real-item">
                     <div class="bank-real-label">Nuv. moms periode</div>
-                    <div class="bank-real-value negative">${formatNumberToDKK(vatAmount)}</div>
+                    <div class="bank-real-value ${vatAmount < 0 ? 'positive' : 'negative'}">${formatNumberToDKK(vatAmount, false)}</div>
                 </div>
-                <span>-</span>
+                ${
+                    !haveProvisionalTax
+                        ? `
+                <span>${resultVatAmount < 0 ? '+' : '-'}</span>
                 <div class="bank-real-item">
-                    <div class="bank-real-label">Nuv. moms af resultat</div>
-                    <div class="bank-real-value negative">${formatNumberToDKK(resultVatAmount)}</div>
+                    <div class="bank-real-label">22% af nuv. resultat</div>
+                    <div class="bank-real-value ${resultVatAmount < 0 ? 'positive' : 'negative'}">${formatNumberToDKK(resultVatAmount, false)}</div>
                 </div>
+                `
+                        : `
+                <span>${provisionalTaxAmount < 0 ? '+' : '-'}</span>
+                <div class="bank-real-item">
+                    <div class="bank-real-label">Skat for nuv. periode</div>
+                    <div class="bank-real-value ${provisionalTaxAmount < 0 ? 'positive' : 'negative'}">${formatNumberToDKK(
+                              provisionalTaxAmount,
+                              false
+                          )}</div>
+                </div>`
+                }
                 <span>=</span>
                 <div class="bank-real-item">
-                    <div class="bank-real-label">Tilgængeligt saldobeløb</div>
+                    <div class="bank-real-label">Reelt rådigheds banksaldobeløb</div>
                     <div class="bank-real-value positive">${formatNumberToDKK(result)}</div>
                 </div>
             </div>

@@ -1,0 +1,19 @@
+{
+    "name": "supernero",
+    "version": "1.0.0",
+    "description": "https://supernero.app",
+    "main": "content.js",
+    "scripts": {
+        "package": "zip -r archive.zip content.js content.css images manifest.json"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mikkeldamm/supernero.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/mikkeldamm/supernero/issues"
+    },
+    "homepage": "https://github.com/mikkeldamm/supernero#readme"
+}
