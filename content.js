@@ -79,7 +79,8 @@
 
     function renderBankRealTimeBalance() {
         const resultWidgetElement = document.querySelector('.widget-stats.chart');
-        const bankSumElement = document.querySelector('.bank-widget-case-bank-information-balance');
+        const bankElements = [...document.querySelectorAll('.bank-widget-case')].find((_e) => _e.style.display !== 'none');
+        const bankSumElement = bankElements.querySelector('.bank-widget-case-bank-information-balance');
         const vatSumElement = document.querySelector('#vat-countdown .span6');
 
         if (!resultWidgetElement || !bankSumElement || !vatSumElement) {
@@ -133,7 +134,7 @@
                 <span>=</span>
                 <div class="bank-real-item">
                     <div class="bank-real-label">Reelt rådigheds banksaldobeløb</div>
-                    <div class="bank-real-value positive">${formatNumberToDKK(result)}</div>
+                    <div class="bank-real-value ${result < 0 ? 'negative' : 'positive'}">${formatNumberToDKK(result)}</div>
                 </div>
             </div>
         `;
