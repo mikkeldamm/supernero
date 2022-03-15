@@ -200,6 +200,14 @@
     function prepareApp() {
         const styleElement = document.createElement('style');
         styleElement.innerHTML = `
+            body .lens {
+                display: none !important;
+            }
+            
+            body .zoom-container {
+                cursor: default !important;
+            }
+            
             .reconciliation-item .create-voucher-purchase {
                 position: absolute;
                 background-color: #006edc;
