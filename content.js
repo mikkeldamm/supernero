@@ -17,6 +17,7 @@
             renderVoucherCreateButtonsInBank();
             renderInvoicesSumOfAmounts();
             renderBankRealTimeBalance();
+            renderYearlyProfit();
         }, 3000);
 
         lastLocationHref = window.location.href;
@@ -145,6 +146,47 @@
         `;
 
         resultWidgetElement.parentNode.insertBefore(bankRealElement, resultWidgetElement);
+    }
+
+    function getCountOfDaysFromFirstDayOfYearToNow() {
+        const firstDayOfYear = new Date(new Date().getFullYear(), 0, 1);
+        const now = new Date();
+
+        return Math.round((now - firstDayOfYear) / (1000 * 60 * 60 * 24));
+    }
+
+    function renderYearlyProfit() {
+        const widgetStatsResultsTotalElement = document.querySelector('.widget-stats-results-total');
+        if (!widgetStatsResultsTotalElement) {
+            return;
+        }
+
+        const widgetStatsResultsTotalValueElement = widgetStatsResultsTotalElement.querySelector('.widget-stats-results-value');
+        if (!widgetStatsResultsTotalValueElement) {
+            return;
+        }
+
+        const widgetStatsResultsTotalValue = getAmount(widgetStatsResultsTotalValueElement.innerText);
+        if (!widgetStatsResultsTotalValue) {
+            // we don't want to render anything if the amount is zero (0)
+            return;
+        }
+
+        const currentAccountingDays = getCountOfDaysFromFirstDayOfYearToNow();
+        const yearlyProfit = (widgetStatsResultsTotalValue / currentAccountingDays) * 365;
+        const yearlyProfitFormatted = formatNumberToDKK(yearlyProfit);
+
+        const yearlyProfitElement = document.createElement('div');
+        yearlyProfitElement.classList.add('widget-stats-results-label');
+        yearlyProfitElement.style.margin = '10px 0 0 0';
+        yearlyProfitElement.innerHTML = `Forventet i år:<strong style="color: #46505a;display: block;">${yearlyProfitFormatted}</strong></div>`;
+
+        widgetStatsResultsTotalValueElement.parentNode.appendChild(yearlyProfitElement);
+
+        const widgetStatsKeyNumberValueTextElement = document.querySelector('.widget-stats-results-value-text');
+        if (widgetStatsKeyNumberValueTextElement) {
+            widgetStatsKeyNumberValueTextElement.remove();
+        }
     }
 
     function wait({ milliseconds }) {
