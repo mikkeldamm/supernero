@@ -1,7 +1,7 @@
 {
     "name": "Supernero",
     "description": "Supernero will enhance Dinero to be usefull for people not working in Dinero.",
-    "version": "1.9",
+    "version": "1.10",
     "manifest_version": 3,
     "content_scripts": [
         {

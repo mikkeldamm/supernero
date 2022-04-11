@@ -328,7 +328,10 @@
         }
 
         const bankLocationHref = window.location.href;
+        document.querySelector('dinero-floating-button').click();
+        await wait({ milliseconds: 200 });
         document.querySelector('.top-nav-actions-list a:nth-child(2)').click();
+        await wait({ milliseconds: 500 });
         await prepareVoucherPurchase({ date, amount, title, bankLocationHref });
     }
 
@@ -343,9 +346,7 @@
     }
 
     async function prepareVoucherPurchase({ date, amount, title, bankLocationHref }) {
-        await wait({ milliseconds: 800 });
-
-        const optionElement = document.querySelector('[data-cy="firstoption"]');
+        const optionElement = document.querySelector('[data-cy="firstOption"]');
         if (!optionElement) {
             return;
         }
@@ -355,8 +356,8 @@
     }
 
     async function insertVoucherPurchase({ date, amount, title, bankLocationHref }) {
-        const dateInputElement = document.querySelector('[data-cy="cashdateinput"]');
-        const amountInputElement = document.querySelector('[data-cy="inputamount"]');
+        const dateInputElement = document.querySelector('[data-cy="cashDateInput"]');
+        const amountInputElement = document.querySelector('[data-cy="inputAmount"]');
 
         if (!dateInputElement || !amountInputElement) {
             return;
