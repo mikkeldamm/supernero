@@ -334,7 +334,9 @@
     document.querySelector("dinero-floating-button").click();
     await wait({ milliseconds: 200 });
     document.querySelector(".top-nav-actions-list a:nth-child(2)").click();
-    await wait({ milliseconds: 500 });
+    while (document.querySelectorAll(".spinner").length > 0) {
+      await wait({ milliseconds: 200 });
+    }
     await prepareVoucherPurchase({ date, amount, title, bankLocationHref });
   }
 
