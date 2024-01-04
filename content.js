@@ -28,7 +28,7 @@
     const topBannerElementOldFrontend = document.querySelector(".top-banner-wrapper");
     const topBannerElementNewFrontend = document.querySelector("dinero-top-banner");
     if (topBannerElementOldFrontend) {
-      topBannerElement.remove();
+      topBannerElementOldFrontend.remove();
     }
 
     if (topBannerElementNewFrontend) {
