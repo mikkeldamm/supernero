@@ -18,10 +18,23 @@
       renderInvoicesSumOfAmounts();
       renderBankRealTimeBalance();
       renderYearlyProfit();
+      removeTopBanner();
     }, 3000);
 
     lastLocationHref = window.location.href;
   }, 500);
+
+  function removeTopBanner() {
+    const topBannerElementOldFrontend = document.querySelector(".top-banner-wrapper");
+    const topBannerElementNewFrontend = document.querySelector("dinero-top-banner");
+    if (topBannerElementOldFrontend) {
+      topBannerElement.remove();
+    }
+
+    if (topBannerElementNewFrontend) {
+      topBannerElementNewFrontend.remove();
+    }
+  }
 
   function formatNumberToDKK(amount, includeMinus = true) {
     if (amount === null || amount === undefined) {
