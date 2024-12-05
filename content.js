@@ -25,8 +25,11 @@
   }, 500);
 
   function removeTopBanner() {
-    const topBannerElementOldFrontend = document.querySelector(".top-banner-wrapper");
-    const topBannerElementNewFrontend = document.querySelector("dinero-top-banner");
+    const topBannerElementOldFrontend = document.querySelector(
+      ".top-banner-wrapper"
+    );
+    const topBannerElementNewFrontend =
+      document.querySelector("dinero-top-banner");
     if (topBannerElementOldFrontend) {
       topBannerElementOldFrontend.remove();
     }
@@ -69,7 +72,11 @@
       return;
     }
 
-    const sumOfInvoices = [...document.querySelectorAll("#trade-voucher-table tbody tr [data-meta=total]")]
+    const sumOfInvoices = [
+      ...document.querySelectorAll(
+        "#trade-voucher-table tbody tr [data-meta=total]"
+      ),
+    ]
       .map((_e) => {
         return _e.innerText || "";
       })
@@ -81,7 +88,9 @@
       })
       .reduce((acc, curr) => acc + curr, 0);
 
-    totalColumn.innerHTML = `<div class="sum-of-invoices">${formatNumberToDKK(sumOfInvoices)} DKK</div>`;
+    totalColumn.innerHTML = `<div class="sum-of-invoices">${formatNumberToDKK(
+      sumOfInvoices
+    )} DKK</div>`;
   }
 
   function getAmount(value) {
@@ -92,30 +101,45 @@
   }
 
   function renderBankRealTimeBalance() {
-    const resultWidgetElement = document.querySelector(".widget-stats.chart");
-    const bankElements = [...document.querySelectorAll(".bank-widget-case")].find((_e) => _e.style.display !== "none");
+    const resultWidgetElement = document.querySelector(
+      "dinero-dashboard .container .wrapper"
+    );
 
-    if (!resultWidgetElement || !bankElements) {
+    if (!resultWidgetElement) {
       return;
     }
 
-    const bankSumElement = bankElements.querySelector(".bank-widget-case-bank-information-balance");
-    const vatSumElement = document.querySelector("#vat-countdown .span6");
+    const bankSumElement = document.querySelector("dinero-bank .amount");
+    const vatSumElement = document.querySelector("dinero-vat .amount");
 
     if (!bankSumElement || !vatSumElement) {
       return;
     }
 
-    const provisionalTaxSumElement = document.querySelector(".provisional-tax .provisional-tax-amount");
-    const haveProvisionalTax = provisionalTaxSumElement && provisionalTaxSumElement.innerText ? true : false;
-    const provisionalTaxAmount = haveProvisionalTax ? getAmount(provisionalTaxSumElement.innerText) : 0;
+    const provisionalTaxSumElement = document.querySelector(
+      "dinero-provisional-tax .amount"
+    );
+    const haveProvisionalTax =
+      provisionalTaxSumElement && provisionalTaxSumElement.innerText
+        ? true
+        : false;
+    const provisionalTaxAmount = haveProvisionalTax
+      ? getAmount(provisionalTaxSumElement.innerText)
+      : 0;
 
     const bankAmount = getAmount(bankSumElement.innerText);
-    const vatAmount = getAmount(vatSumElement.querySelector("h2").innerText);
-    const resultAmount = getAmount(resultWidgetElement.querySelector("#dashboard-graph-total").innerText);
+    const vatAmount = getAmount(vatSumElement.innerText);
+    const resultAmount = getAmount(
+      resultWidgetElement.querySelector(
+        "dinero-overview .turnover-container > div:nth-child(3) > h2"
+      ).innerText
+    );
     const resultVatAmount = resultAmount * 0.22;
 
-    const result = bankAmount - vatAmount - (haveProvisionalTax ? provisionalTaxAmount : resultVatAmount);
+    const result =
+      bankAmount -
+      vatAmount -
+      (haveProvisionalTax ? provisionalTaxAmount : resultVatAmount);
 
     const bankRealElement = document.createElement("div");
     bankRealElement.classList.add("widget-stats");
@@ -124,12 +148,16 @@
             <div class="bank-real-items">
                 <div class="bank-real-item">
                     <div class="bank-real-label">Nuv. banksaldo</div>
-                    <div class="bank-real-value positive">${formatNumberToDKK(bankAmount)}</div>
+                    <div class="bank-real-value positive">${formatNumberToDKK(
+                      bankAmount
+                    )}</div>
                 </div>
                 <span>${vatAmount < 0 ? "+" : "-"}</span>
                 <div class="bank-real-item">
                     <div class="bank-real-label">Nuv. moms periode</div>
-                    <div class="bank-real-value ${vatAmount < 0 ? "positive" : "negative"}">${formatNumberToDKK(vatAmount, false)}</div>
+                    <div class="bank-real-value ${
+                      vatAmount < 0 ? "positive" : "negative"
+                    }">${formatNumberToDKK(vatAmount, false)}</div>
                 </div>
                 ${
                   !haveProvisionalTax
@@ -137,31 +165,34 @@
                 <span>${resultVatAmount < 0 ? "+" : "-"}</span>
                 <div class="bank-real-item">
                     <div class="bank-real-label">22% af nuv. resultat</div>
-                    <div class="bank-real-value ${resultVatAmount < 0 ? "positive" : "negative"}">${formatNumberToDKK(
-                        resultVatAmount,
-                        false
-                      )}</div>
+                    <div class="bank-real-value ${
+                      resultVatAmount < 0 ? "positive" : "negative"
+                    }">${formatNumberToDKK(resultVatAmount, false)}</div>
                 </div>
                 `
                     : `
                 <span>${provisionalTaxAmount < 0 ? "+" : "-"}</span>
                 <div class="bank-real-item">
                     <div class="bank-real-label">Skat for nuv. periode</div>
-                    <div class="bank-real-value ${provisionalTaxAmount < 0 ? "positive" : "negative"}">${formatNumberToDKK(
-                        provisionalTaxAmount,
-                        false
-                      )}</div>
+                    <div class="bank-real-value ${
+                      provisionalTaxAmount < 0 ? "positive" : "negative"
+                    }">${formatNumberToDKK(provisionalTaxAmount, false)}</div>
                 </div>`
                 }
                 <span>=</span>
                 <div class="bank-real-item">
                     <div class="bank-real-label">Reelt rådigheds banksaldobeløb</div>
-                    <div class="bank-real-value ${result < 0 ? "negative" : "positive"}">${formatNumberToDKK(result)}</div>
+                    <div class="bank-real-value ${
+                      result < 0 ? "negative" : "positive"
+                    }">${formatNumberToDKK(result)}</div>
                 </div>
             </div>
         `;
 
-    resultWidgetElement.parentNode.insertBefore(bankRealElement, resultWidgetElement);
+    resultWidgetElement.parentNode.insertBefore(
+      bankRealElement,
+      resultWidgetElement
+    );
   }
 
   function getCountOfDaysFromFirstDayOfYearToNow() {
@@ -172,24 +203,32 @@
   }
 
   function renderYearlyProfit() {
-    const widgetStatsResultsTotalElement = document.querySelector(".widget-stats-results-total");
+    const widgetStatsResultsTotalElement = document.querySelector(
+      ".widget-stats-results-total"
+    );
     if (!widgetStatsResultsTotalElement) {
       return;
     }
 
-    const widgetStatsResultsTotalValueElement = widgetStatsResultsTotalElement.querySelector(".widget-stats-results-value");
+    const widgetStatsResultsTotalValueElement =
+      widgetStatsResultsTotalElement.querySelector(
+        ".widget-stats-results-value"
+      );
     if (!widgetStatsResultsTotalValueElement) {
       return;
     }
 
-    const widgetStatsResultsTotalValue = getAmount(widgetStatsResultsTotalValueElement.innerText);
+    const widgetStatsResultsTotalValue = getAmount(
+      widgetStatsResultsTotalValueElement.innerText
+    );
     if (!widgetStatsResultsTotalValue) {
       // we don't want to render anything if the amount is zero (0)
       return;
     }
 
     const currentAccountingDays = getCountOfDaysFromFirstDayOfYearToNow();
-    const yearlyProfit = (widgetStatsResultsTotalValue / currentAccountingDays) * 365;
+    const yearlyProfit =
+      (widgetStatsResultsTotalValue / currentAccountingDays) * 365;
     const yearlyProfitFormatted = formatNumberToDKK(yearlyProfit);
 
     const yearlyProfitElement = document.createElement("div");
@@ -197,9 +236,13 @@
     yearlyProfitElement.style.margin = "10px 0 0 0";
     yearlyProfitElement.innerHTML = `Forventet i år:<strong style="color: #46505a;display: block;">${yearlyProfitFormatted}</strong></div>`;
 
-    widgetStatsResultsTotalValueElement.parentNode.appendChild(yearlyProfitElement);
+    widgetStatsResultsTotalValueElement.parentNode.appendChild(
+      yearlyProfitElement
+    );
 
-    const widgetStatsKeyNumberValueTextElement = document.querySelector(".widget-stats-results-value-text");
+    const widgetStatsKeyNumberValueTextElement = document.querySelector(
+      ".widget-stats-results-value-text"
+    );
     if (widgetStatsKeyNumberValueTextElement) {
       widgetStatsKeyNumberValueTextElement.remove();
     }
@@ -293,9 +336,21 @@
                 margin: 0 30px;
                 color: #5d5d5d;
             }
+              dinero-dashboard .container .content {
+                position: relative;
+              }
             .widget-stats.bank-real {
-                margin-top: -100px;
-                padding: 20px;
+                margin-bottom: 20px;
+                z-index: 10;
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                border-radius: 18px;
+                padding: 2rem;
+                box-sizing: border-box;
+                background-color: #fff;
+                box-shadow: 0 1px 3px #00000029;
             }
         `;
 
@@ -308,31 +363,39 @@
       return;
     }
 
-    [...document.querySelectorAll(".reconciliation-item")].forEach((_element) => {
-      const existingButton = _element.querySelector(".create-voucher-purchase");
-      if (existingButton) {
-        return;
-      }
-
-      if (_element.classList.contains("is-matched")) {
+    [...document.querySelectorAll(".reconciliation-item")].forEach(
+      (_element) => {
+        const existingButton = _element.querySelector(
+          ".create-voucher-purchase"
+        );
         if (existingButton) {
-          _element.removeChild(existingButton);
+          return;
         }
-        return;
+
+        if (_element.classList.contains("is-matched")) {
+          if (existingButton) {
+            _element.removeChild(existingButton);
+          }
+          return;
+        }
+
+        const button = createNodeForCreateButton();
+        button.addEventListener("click", onCreateVoucherPurchaseClick);
+
+        _element.appendChild(button);
       }
-
-      const button = createNodeForCreateButton();
-      button.addEventListener("click", onCreateVoucherPurchaseClick);
-
-      _element.appendChild(button);
-    });
+    );
   }
 
   async function onCreateVoucherPurchaseClick({ target }) {
     const transaction = target.parentElement;
-    const titleElement = transaction.querySelector(".reconciliation-item-description");
+    const titleElement = transaction.querySelector(
+      ".reconciliation-item-description"
+    );
     const dateElement = transaction.querySelector(".reconciliation-item-date");
-    const amountElement = transaction.querySelector(".reconciliation-item-amount");
+    const amountElement = transaction.querySelector(
+      ".reconciliation-item-amount"
+    );
 
     const title = titleElement.innerText.trim();
     const date = dateElement.innerText.toString().trim();
@@ -363,7 +426,12 @@
     return createButtonElement;
   }
 
-  async function prepareVoucherPurchase({ date, amount, title, bankLocationHref }) {
+  async function prepareVoucherPurchase({
+    date,
+    amount,
+    title,
+    bankLocationHref,
+  }) {
     const optionElement = document.querySelector('[data-cy="firstOption"]');
     if (!optionElement) {
       return;
@@ -373,9 +441,18 @@
     await insertVoucherPurchase({ date, amount, title, bankLocationHref });
   }
 
-  async function insertVoucherPurchase({ date, amount, title, bankLocationHref }) {
-    const dateInputElement = document.querySelector('[data-cy="cashDateInput"]');
-    const amountInputElement = document.querySelector('[data-cy="inputAmount"]');
+  async function insertVoucherPurchase({
+    date,
+    amount,
+    title,
+    bankLocationHref,
+  }) {
+    const dateInputElement = document.querySelector(
+      '[data-cy="cashDateInput"]'
+    );
+    const amountInputElement = document.querySelector(
+      '[data-cy="inputAmount"]'
+    );
 
     if (!dateInputElement || !amountInputElement) {
       return;
@@ -397,7 +474,9 @@
     const bankTransactionTitleElement = document.createElement("div");
     bankTransactionTitleElement.classList.add("bank-transaction-title");
     bankTransactionTitleElement.innerText = title;
-    crowderSelectElementParent.querySelector(".input-label").after(bankTransactionTitleElement);
+    crowderSelectElementParent
+      .querySelector(".input-label")
+      .after(bankTransactionTitleElement);
 
     redirectInterval = setInterval(() => {
       if (!window.location.href.match(/vouchers\/purchases\/cash\/(\d+)/gi)) {
