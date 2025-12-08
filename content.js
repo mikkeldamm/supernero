@@ -14,7 +14,6 @@
     }
 
     renderTimer = setTimeout(() => {
-      renderVoucherCreateButtonsInBank();
       renderInvoicesSumOfAmounts();
       renderBankRealTimeBalance();
       renderYearlyProfit();
@@ -134,7 +133,7 @@
         "dinero-overview .turnover-container > div:nth-child(3) > h2"
       ).innerText
     );
-    const resultVatAmount = resultAmount * 0.22;
+    const resultVatAmount = resultAmount < 0 ? 0 : resultAmount * 0.22;
 
     const result =
       bankAmount -
